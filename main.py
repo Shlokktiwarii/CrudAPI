@@ -18,7 +18,7 @@ def health():
     return{
         "status":"ok"
     }
-@app.get("/tasks")
+@app.get("/tasks",summary="Get all tasks")
 def get_tasks():
     return tasks
 
@@ -31,7 +31,7 @@ def get_task(id:int):
         status_code=404 , 
         detail={"error":f"Task{id} not found"}
     )
-@app.post('/tasks',status_code=201)
+@app.post('/tasks',status_code=201, summary="Create new tasks")
 def create_task(task:dict =Body(...)):
     if "title" not in task or task["title"].strip() == "":
          raise HTTPException(
@@ -52,7 +52,7 @@ def create_task(task:dict =Body(...)):
 
     return new_task
 
-@app.put("/tasks,{id}")
+@app.put("/tasks/{id}", summary="Update the tasks")
 def update_task(id: int, body: dict):
     for task in tasks:
         if task["id"] == id:
@@ -70,7 +70,7 @@ def update_task(id: int, body: dict):
 
     raise HTTPException(status_code=404, detail="Task not found")
 
-@app.delete("/tasks/{id}", status_code=204)
+@app.delete("/tasks/{id}", status_code=204 , summary="Delete tasks")
 def delete_task(id: int):
     for index, task in enumerate(tasks):
         if task["id"] == id:
