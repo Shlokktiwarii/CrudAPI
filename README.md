@@ -178,5 +178,5 @@ This project helped me understand:
 
 **Shlok Tiwari**
 
-GitHub: https://github.com/your-username
-LinkedIn: https://linkedin.com/in/your-profile
+GitHub: https://github.com/shlokktiwarii
+LinkedIn: www.linkedin.com/in/shlokktiwarii
