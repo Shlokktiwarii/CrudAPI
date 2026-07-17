@@ -1,4 +1,4 @@
-from fastapi import FastAPI,HTTPException, Body
+from fastapi import FastAPI,HTTPException, Body, Response
 
 app = FastAPI()
 
@@ -39,10 +39,8 @@ def create_task(task:dict =Body(...)):
             detail={"error": "Title is required"}
         )
 
-    
     new_id = len(tasks) + 1
 
-   
     new_task = {
         "id": new_id,
         "title": task["title"],
@@ -53,4 +51,30 @@ def create_task(task:dict =Body(...)):
     tasks.append(new_task)
 
     return new_task
-        
+
+@app.put("/tasks,{id}")
+def update_task(id: int, body: dict):
+    for task in tasks:
+        if task["id"] == id:
+
+            if not body:
+                raise HTTPException(status_code=400, detail="Request body is empty")
+
+            if "title" in body:
+                task["title"] = body["title"]
+
+            if "done" in body:
+                task["done"] = body["done"]
+
+            return task
+
+    raise HTTPException(status_code=404, detail="Task not found")
+
+@app.delete("/tasks/{id}", status_code=204)
+def delete_task(id: int):
+    for index, task in enumerate(tasks):
+        if task["id"] == id:
+            tasks.pop(index)
+            return Response(status_code=204)
+
+    raise HTTPException(status_code=404, detail="Task not found")
